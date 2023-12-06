@@ -1,7 +1,7 @@
 var assert = require('assert');
 const Web3 = require('web3')
 const CryptoJS = require('crypto-js');
-const { KeyringController: ZKEVMKeyring} = require('../src/index')
+const { KeyringController: ZKEVMKeyring, getBalance} = require('../src/index')
 
 const {
     HD_WALLET_12_MNEMONIC,
@@ -88,11 +88,18 @@ describe('Initialize wallet ', () => {
         const acc = await zkEVMkeyring.getAccounts()
         console.log("acc ", acc)
     })
-    
+
     it("Should import correct account ", async () => {
         const address = await zkEVMkeyring.importWallet(EXTERNAL_ACCOUNT_PRIVATE_KEY)
         assert(address.toLowerCase() === EXTERNAL_ACCOUNT_ADDRESS.toLowerCase(), "Wrong address")
         assert(zkEVMkeyring.importedWallets.length === 1, "Should have 1 imported wallet")
+    })
+
+    it("Get address balance", async () => {
+        const accounts = await zkEVMkeyring.getAccounts()
+        const web3 = new Web3(TESTNET.URL);
+        const balance = await getBalance(accounts[0], web3)
+        console.log(" get balance ", balance, accounts)
     })
 
 })

@@ -11,3 +11,4 @@
 - Added method to sign Typed Data (EIP-712)
 - Added importWallet() to import account using privateKey.
 - Added sign() to sign a message or transaction and get signature along with v,r,s.
+- Added getBalance() to fetch the balance in native currency.
