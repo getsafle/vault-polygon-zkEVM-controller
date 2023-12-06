@@ -102,4 +102,18 @@ describe('Initialize wallet ', () => {
         console.log(" get balance ", balance, accounts)
     })
 
+    it("Get fees for rawTransaction", async () => {
+        const accounts = await zkEVMkeyring.getAccounts()
+        const web3 = new Web3(TESTNET.URL);
+        const rawTx = {
+            from: accounts[0],
+            to:'0x641BB2596D8c0b32471260712566BF933a2f1a8e',
+            value:0,
+            data:'0x00'
+        }
+        const fees = await zkEVMkeyring.getFees(rawTx, web3)
+        console.log(" fees for the transaction ", fees)
+
+    })
+
 })
