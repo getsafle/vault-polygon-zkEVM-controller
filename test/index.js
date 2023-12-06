@@ -88,5 +88,11 @@ describe('Initialize wallet ', () => {
         const acc = await zkEVMkeyring.getAccounts()
         console.log("acc ", acc)
     })
+    
+    it("Should import correct account ", async () => {
+        const address = await zkEVMkeyring.importWallet(EXTERNAL_ACCOUNT_PRIVATE_KEY)
+        assert(address.toLowerCase() === EXTERNAL_ACCOUNT_ADDRESS.toLowerCase(), "Wrong address")
+        assert(zkEVMkeyring.importedWallets.length === 1, "Should have 1 imported wallet")
+    })
 
 })
