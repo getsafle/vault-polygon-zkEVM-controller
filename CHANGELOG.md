@@ -1,7 +1,6 @@
 ### 1.0.0 (2023-12-07)
 
-##### Implemented Keyring Controller for Base Chain
-
+##### Implemented Keyring Controller for Base Chain and Added Support for legacy transactions.
 - Added method to generate keyring
 - Added method to restore a keyring
 - Added method to add a new account to the keyring object
@@ -14,3 +13,4 @@
 - Added getBalance() to fetch the balance in native currency.
 - Added getFee() method for gas estimation for Legacy transactions.
 - Added support for Legacy transactions.
+- Updated README.md.

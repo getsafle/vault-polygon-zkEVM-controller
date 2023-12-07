@@ -266,7 +266,7 @@ class KeyringController extends EventEmitter {
     async signTransaction(rawTx, privateKey) {
 
         const pkey = Buffer.from(privateKey, 'hex');
-        console.log('chainId: ', chainId);
+        
         const common = Common.custom({ chainId: chainId }, { hardfork: Hardfork.Istanbul })
 
         const tx = LegacyTransaction.fromTxData(rawTx, { common })
