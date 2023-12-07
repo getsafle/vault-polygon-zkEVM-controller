@@ -11,6 +11,9 @@ const { normalize: normalizeAddress } = require('eth-sig-util')
 const SimpleKeyring = require('eth-simple-keyring')
 const HdKeyring = require('eth-hd-keyring')
 
+const axios = require('axios')
+let chainId;
+
 
 const keyringTypes = [
     SimpleKeyring,
@@ -498,10 +501,48 @@ class KeyringController extends EventEmitter {
             throw err
         }
     }
+    /**
+    * get Fees method to get the fees for reqiured chainId for Polygon zkEVM
+    *
+    * returns the object having gasLimit and fees for the block
+    *
+    * @param {Object} rawTx - Rawtransaction - {from,to,value,data}  
+    * @param {Object} web3 - web3 object.
+    * @returns {Object} - gasLimit for the transaction and an Object of fees for the transaction
+    */
+    async getFees(rawTx, web3) {
+        const { from, to, value, data } = rawTx
+        chainId = await web3.eth.getChainId();
+        const gasLimit = await web3.eth.estimateGas({ to, from, value, data });
+        let URL = (chainId === 1101) ? 'https://gasstation.polygon.technology/zkevm' : 'https://gasstation-testnet.polygon.technology/zkevm';
+        
+        const response = await axios({
+            url: URL,
+            method: 'GET',
+        });
+
+        let fees = {
+            "slow": {
+                "gasPrice": parseInt(parseFloat(response.data.standard) * Math.pow(10, 9))
+            },
+            "standard": {
+                "gasPrice": parseInt(parseFloat(response.data.fast) * Math.pow(10, 9)),
+            },
+            "fast": {
+                "gasPrice": parseInt(parseFloat(response.data.fastest) * Math.pow(10, 9))
+            },
+            "baseFee": 0,
+        };
+
+        return {
+            gasLimit: gasLimit,
+            fees: fees
+        }
+    }
 }
 const getBalance = async (address, web3) => {
     const balance = await web3.eth.getBalance(address);
     return { balance: web3.utils.fromWei(balance, 'ether') }
 }
 
-module.exports = { KeyringController, getBalance}
+module.exports = { KeyringController, getBalance }
