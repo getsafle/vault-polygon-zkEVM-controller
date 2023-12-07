@@ -1,4 +1,4 @@
-# vault-polygon-zkEVM-controller <code><a href="https://www.docker.com/" target="_blank"><img height="50" src="https://user-images.githubusercontent.com/18598517/235932702-bc47eae5-d672-4dd9-9da2-8ea8f51a93f3.png"></a></code>
+# vault-polygon-zkEVM-controller <code><a href="https://www.docker.com/" target="_blank"><img height="50" src="https://zkevm.polygonscan.com/images/logo.svg?v=23.11.4.0"></a></code>
 
 [![npm version](https://badge.fury.io/js/@getsafle%2Fvault-polygon-zkevm-controller.svg)](https://badge.fury.io/js/@getsafle%2Fvault-polygon-zkevm-controller)    <img alt="Static Badge" src="https://img.shields.io/badge/License-MIT-green">   [![Discussions][discussions-badge]][discussions-link]
  <img alt="Static Badge" src="https://img.shields.io/badge/Polygon zkEVM_controller-documentation-purple">    
