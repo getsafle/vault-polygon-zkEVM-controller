@@ -10,6 +10,9 @@ const { normalize: normalizeAddress } = require('eth-sig-util')
 
 const SimpleKeyring = require('eth-simple-keyring')
 const HdKeyring = require('eth-hd-keyring')
+const { LegacyTransaction } = require('@ethereumjs/tx')
+const { Common, Hardfork } = require('@ethereumjs/common')
+const { bufferToHex } = require('ethereumjs-util')
 
 const axios = require('axios')
 let chainId;
@@ -250,6 +253,30 @@ class KeyringController extends EventEmitter {
     //
     // SIGNING METHODS
     //
+
+    /**
+     * Sign PolygonzkEVM Transaction
+     *
+     * Signs an PolygonzkEVM transaction object.
+     *
+     * @param {Object} rawTx - The transaction to sign.
+     * @returns {string} The signed transaction raw string.
+     */
+
+    async signTransaction(rawTx, privateKey) {
+
+        const pkey = Buffer.from(privateKey, 'hex');
+        console.log('chainId: ', chainId);
+        const common = Common.custom({ chainId: chainId }, { hardfork: Hardfork.Istanbul })
+
+        const tx = LegacyTransaction.fromTxData(rawTx, { common })
+
+        const signedTransaction = tx.sign(pkey);
+
+        const signedTx = bufferToHex(signedTransaction.serialize());
+
+        return signedTx
+    }
 
     /**
      * Sign Transaction or Message to get v,r,s
@@ -515,7 +542,7 @@ class KeyringController extends EventEmitter {
         chainId = await web3.eth.getChainId();
         const gasLimit = await web3.eth.estimateGas({ to, from, value, data });
         let URL = (chainId === 1101) ? 'https://gasstation.polygon.technology/zkevm' : 'https://gasstation-testnet.polygon.technology/zkevm';
-        
+
         const response = await axios({
             url: URL,
             method: 'GET',

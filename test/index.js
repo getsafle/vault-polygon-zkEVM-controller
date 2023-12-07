@@ -116,4 +116,35 @@ describe('Initialize wallet ', () => {
 
     })
 
+    it("sign Transaction ", async () => {
+
+        const accounts = await zkEVMkeyring.getAccounts()
+        const from = accounts[0]
+        const web3 = new Web3(TESTNET.URL);
+
+        const count = await web3.eth.getTransactionCount(from);
+
+        const defaultNonce = await web3.utils.toHex(count);
+        const to = '0x641BB2596D8c0b32471260712566BF933a2f1a8e' 
+
+        const getFeeEstimate= await zkEVMkeyring.getFees({from,to,
+            value: web3.utils.numberToHex(web3.utils.toWei('0', 'ether')),data:"0x00"},web3);
+            console.log(getFeeEstimate);
+
+        const rawTx = {
+            to,
+            from,
+            value: web3.utils.numberToHex(web3.utils.toWei('0', 'ether')),
+            gasLimit:getFeeEstimate.gasLimit,
+            gasPrice: getFeeEstimate.fees.slow.gasPrice,
+            nonce: defaultNonce,
+            data: '0x',
+        };
+
+        const privateKey = await zkEVMkeyring.exportAccount(accounts[0])
+        const signedTX = await zkEVMkeyring.signTransaction(rawTx, privateKey)
+        console.log("signedTX ", signedTX)
+
+    })
+
 })
