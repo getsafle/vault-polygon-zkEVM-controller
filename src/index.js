@@ -10,13 +10,12 @@ const { normalize: normalizeAddress } = require('eth-sig-util')
 
 const SimpleKeyring = require('eth-simple-keyring')
 const HdKeyring = require('eth-hd-keyring')
+
 const { LegacyTransaction } = require('@ethereumjs/tx')
 const { Common, Hardfork } = require('@ethereumjs/common')
 const { bufferToHex } = require('ethereumjs-util')
 
 const axios = require('axios')
-let chainId;
-
 
 const keyringTypes = [
     SimpleKeyring,
@@ -266,6 +265,8 @@ class KeyringController extends EventEmitter {
     async signTransaction(rawTx, privateKey) {
 
         const pkey = Buffer.from(privateKey, 'hex');
+
+        const chainId = rawTx.chainId; 
         
         const common = Common.custom({ chainId: chainId }, { hardfork: Hardfork.Istanbul })
 
@@ -538,8 +539,7 @@ class KeyringController extends EventEmitter {
     * @returns {Object} - gasLimit for the transaction and an Object of fees for the transaction
     */
     async getFees(rawTx, web3) {
-        const { from, to, value, data } = rawTx
-        chainId = await web3.eth.getChainId();
+        const { from, to, value, data, chainId} = rawTx
         const gasLimit = await web3.eth.estimateGas({ to, from, value, data });
         let URL = (chainId === 1101) ? 'https://gasstation.polygon.technology/zkevm' : 'https://gasstation-testnet.polygon.technology/zkevm';
 

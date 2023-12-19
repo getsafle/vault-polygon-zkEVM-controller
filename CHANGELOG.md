@@ -1,6 +1,7 @@
 ### 1.0.0 (2023-12-07)
 
 ##### Implemented Keyring Controller for Base Chain and Added Support for legacy transactions.
+
 - Added method to generate keyring
 - Added method to restore a keyring
 - Added method to add a new account to the keyring object
@@ -14,3 +15,9 @@
 - Added getFee() method for gas estimation for Legacy transactions.
 - Added support for Legacy transactions.
 - Updated README.md.
+
+
+##### Updated 'main' path and Updated signTransaction Method. 
+
+- Updated 'main' path to "src/index.js" .
+- Removed signTransaction() dependency from getFees().
