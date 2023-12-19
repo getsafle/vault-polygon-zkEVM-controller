@@ -14,3 +14,5 @@
 - Added getFee() method for gas estimation for Legacy transactions.
 - Added support for Legacy transactions.
 - Updated README.md.
+
+##### Changed 'main' path and Updated signTransaction Method. 
