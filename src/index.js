@@ -11,8 +11,7 @@ const { normalize: normalizeAddress } = require('eth-sig-util')
 const SimpleKeyring = require('eth-simple-keyring')
 const HdKeyring = require('eth-hd-keyring')
 
-const { LegacyTransaction } = require('@ethereumjs/tx')
-const { Common, Hardfork } = require('@ethereumjs/common')
+const Tx = require('ethereumjs-tx');
 const { bufferToHex } = require('ethereumjs-util')
 
 const axios = require('axios')
@@ -264,17 +263,13 @@ class KeyringController extends EventEmitter {
 
     async signTransaction(rawTx, privateKey) {
 
+        const tx = new Tx(rawTx);
+
         const pkey = Buffer.from(privateKey, 'hex');
 
-        const chainId = rawTx.chainId; 
-        
-        const common = Common.custom({ chainId: chainId }, { hardfork: Hardfork.Istanbul })
+        tx.sign(pkey);
 
-        const tx = LegacyTransaction.fromTxData(rawTx, { common })
-
-        const signedTransaction = tx.sign(pkey);
-
-        const signedTx = bufferToHex(signedTransaction.serialize());
+        const signedTx = `0x${tx.serialize().toString('hex')}`;
 
         return signedTx
     }
