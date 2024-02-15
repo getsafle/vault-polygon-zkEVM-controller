@@ -21,3 +21,8 @@
 
 - Updated 'main' path to "src/index.js" .
 - Removed signTransaction() dependency from getFees().
+
+### 1.0.1 (2024-02-15)
+
+- Updated sign transaction to use ethereumjs-tx module.
+- Removed unused dependencies.
